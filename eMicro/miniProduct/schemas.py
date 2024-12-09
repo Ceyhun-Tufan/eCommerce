@@ -17,6 +17,16 @@ class ProductBase(BaseModel):
         orm_mode = True
 
 
+class ProductOverallResponse(BaseModel):
+    id: int
+    name:str
+    price:float
+    image_path:str
+
+    class Config:
+        orm_mode = True
+
+
 class ProductCreate(ProductBase):
     seller_id:int = Field(...,example=123)
 
@@ -34,12 +44,16 @@ class ProductUpdate(ProductBase):
     class Config:
         orm_mode = True 
 
+
+
+
 class ProductResponse(ProductBase):
     id: int
     seller_id: int
     name:str
     description: str
     price: float
+    image_path: str = Field(None,example="img/xxx.jpg")
     created_at: datetime
     updated_at: Optional[datetime]
     stock: int  # Yeni alan

@@ -21,7 +21,7 @@ async def get_products(db: AsyncSession):
 
 
 # Tek bir ürünü ID ile getirme
-async def get_product(db: AsyncSession, product_id: int):
+async def get_product_detailed(db: AsyncSession, product_id: int):
     try:
         result = await db.execute(select(Product).where(Product.id == product_id))
         return result.scalar_one()
@@ -31,7 +31,7 @@ async def get_product(db: AsyncSession, product_id: int):
 
 # Ürün güncelleme
 async def update_product(db: AsyncSession, product_id: int, product_data: ProductUpdate):
-    product = await get_product(db, product_id)
+    product = await get_product_detailed(db, product_id)
     if not product:
         return None
     for key, value in product_data.model_dump(exclude_unset=True).items():
@@ -43,7 +43,7 @@ async def update_product(db: AsyncSession, product_id: int, product_data: Produc
 
 # Ürün silme
 async def delete_product(db: AsyncSession, product_id: int):
-    product = await get_product(db, product_id)
+    product = await get_product_detailed(db, product_id)
     if not product:
         return None
     await db.delete(product)
